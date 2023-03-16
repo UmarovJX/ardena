@@ -272,6 +272,8 @@ export default {
 };
 </script>
 
+
+
 <style lang="scss" scoped>
 .main__form {
   padding: 50px 0 110px;
