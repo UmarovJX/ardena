@@ -15,7 +15,7 @@
           @submit.prevent="onSubmit"
           class="main__form-block row align-items-center"
         >
-          <!--     FULL NAME     -->
+          FULL NAME
           <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
             <b-form-group>
               <b-form-input
