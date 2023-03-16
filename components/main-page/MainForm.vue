@@ -1,25 +1,20 @@
 <template>
   <div class="main__form">
     <div class="container">
-      <h2
-        class="main__form-title title"
-        data-aos="fade-right"
-      >
-        {{ $t('titles.form_title') }}
+      <h2 class="main__form-title title" data-aos="fade-right">
+        {{ $t("titles.form_title") }}
       </h2>
       <p
         class="main__form-description"
         data-aos="fade-right"
         v-html="getPropertyLang(formDescription)"
-      >
-      </p>
+      ></p>
 
-      <div
-        data-aos="fade-right"
-        class="bordered px-4 px-sm-0"
-      >
-        <b-form @submit.prevent="onSubmit" class="main__form-block row align-items-center">
-
+      <div data-aos="fade-right" class="bordered px-4 px-sm-0">
+        <b-form
+          @submit.prevent="onSubmit"
+          class="main__form-block row align-items-center"
+        >
           <!--     FULL NAME     -->
           <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
             <b-form-group>
@@ -44,6 +39,58 @@
                 v-model="form.phone"
                 type="tel"
                 :placeholder="$t('placeholders.phone')"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <!--     EMAIL     -->
+          <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
+            <b-form-group>
+              <b-form-input
+                class="px-0"
+                id="email"
+                v-model="form.email"
+                type="email"
+                :placeholder="$t('placeholders.email')"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <!--     SHIPPING NAME     -->
+          <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
+            <b-form-group>
+              <b-form-input
+                class="px-0"
+                id="shipping_name"
+                v-model="form.shipping_name"
+                type="text"
+                :placeholder="$t('placeholders.shipping_name')"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <!--     TN VED    -->
+          <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
+            <b-form-group>
+              <b-form-input
+                class="px-0"
+                id="tn_ved"
+                v-model="form.TN_VED"
+                type="text"
+                :placeholder="$t('placeholders.tn_ved')"
+                required
+              ></b-form-input>
+            </b-form-group>
+          </div>
+          <!--     WEIGHT     -->
+          <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
+            <b-form-group>
+              <b-form-input
+                class="px-0"
+                id="name"
+                v-model="form.weight"
+                type="number"
+                :placeholder="$t('placeholders.weight')"
                 required
               ></b-form-input>
             </b-form-group>
@@ -77,7 +124,7 @@
             </b-form-group>
           </div>
 
-          <!--     VOLUME     -->
+          <!-- VOLUME    
           <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
             <b-form-group>
               <b-form-input
@@ -89,21 +136,7 @@
                 required
               ></b-form-input>
             </b-form-group>
-          </div>
-
-          <!--     WEIGHT     -->
-          <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
-            <b-form-group>
-              <b-form-input
-                class="px-0"
-                id="name"
-                v-model="form.weight"
-                type="number"
-                :placeholder="$t('placeholders.weight')"
-                required
-              ></b-form-input>
-            </b-form-group>
-          </div>
+          </div> -->
 
           <!--     SHIPPING TYPE     -->
           <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
@@ -118,7 +151,9 @@
           </div>
 
           <div class="col-12 col-sm-6 col-xl-3 px-1 px-sm-3">
-            <b-button type="submit" variant="primary">{{ $t('reusable.calculate_btn') }}</b-button>
+            <b-button type="submit" variant="primary">{{
+              $t("reusable.calculate_btn")
+            }}</b-button>
           </div>
 
           <span
@@ -133,89 +168,96 @@
 </template>
 
 <script>
-import {getPropertyLang} from "~/utils/getPropertyLang";
+import { getPropertyLang } from "~/utils/getPropertyLang";
 
 export default {
   name: "MainForm",
   props: {
     formDescription: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     formNotes: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     shippingTypes: {
       type: Array,
-      default: () => ([])
+      default: () => [],
     },
   },
   data() {
     return {
       form: {
-        full_name: '',
-        phone: '',
-        place_from: '',
-        place_to: '',
-        shipping_type_id: '',
-        volume: '',
-        weight: ''
+        full_name: "",
+        phone: "",
+        email: "",
+        shipping_name: "",
+        TN_VED: "",
+        weight: "",
+        place_from: "",
+        place_to: "",
+        shipping_type_id: "",
       },
       options: [],
-      selected: null
-    }
+      selected: null,
+    };
   },
 
   mounted() {
-    this.getOptions()
-    this.pushStaticNull()
+    this.getOptions();
+    this.pushStaticNull();
   },
 
   methods: {
     getPropertyLang,
 
     async onSubmit() {
-      const formData = new FormData;
-      formData.append('full_name', this.form.full_name)
-      formData.append('phone', this.form.phone)
-      formData.append('place_from', this.form.place_from)
-      formData.append('place_to', this.form.place_to)
-      formData.append('shipping_type_id', this.selected)
-      formData.append('volume', this.form.volume)
-      formData.append('weight', this.form.weight)
+      const formData = new FormData();
+      formData.append("full_name", this.form.full_name);
+      formData.append("phone", this.form.phone);
+      formData.append("email", this.form.email);
+      formData.append("shipping_name", this.form.shipping_name);
+      formData.append("tn_ved", this.form.TN_VED);
+      formData.append("weight", this.form.weight);
+      formData.append("place_from", this.form.place_from);
+      formData.append("place_to", this.form.place_to);
+      formData.append("shipping_type_id", this.selected);
 
-      await this.$axios.post('website/feedback/cost-calculation', formData)
+      await this.$axios
+        .post("website/feedback/cost-calculation", formData)
         .then((response) => {
           return {
-            response: response.data
-          }
+            response: response.data,
+          };
         })
         .catch(() => {
           return {
-            response: []
-          }
+            response: [],
+          };
         })
         .finally(() => {
-          this.form.full_name = ''
-          this.form.phone = ''
-          this.form.place_to = ''
-          this.form.place_from = ''
-          this.selected = null
-          this.form.volume = ''
-          this.form.weight = ''
-        })
+          this.form.full_name = "";
+          this.form.phone = "";
+          this.form.email = "";
+          this.form.shipping_name = "";
+          this.form.TN_VED = "";
+          this.form.place_to = "";
+          this.form.place_from = "";
+          this.form.shipping_type_id= "";
+          this.selected = null;
+          this.form.weight = "";
+        });
     },
-
     getOptions() {
-      const locale = this.$i18n.locale
+      const locale = this.$i18n.locale;
       if (Array.isArray(this.shippingTypes)) {
         this.shippingTypes.map((item) => {
           this.options.push({
             text: item.name[locale],
             value: item.id,
-          })
-        })
+          });
+        });
       }
     },
 
@@ -224,14 +266,13 @@ export default {
         text: `${this.$t("placeholders.shipping_type")}`,
         value: null,
         disabled: true,
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .main__form {
   padding: 50px 0 110px;
 
@@ -240,10 +281,10 @@ export default {
     position: relative;
 
     &::after {
-      content: '';
+      content: "";
       width: 80px;
       height: 3px;
-      background-color: #F58B31;
+      background-color: #f58b31;
       position: absolute;
       left: 0;
       bottom: 0;
@@ -253,7 +294,7 @@ export default {
   &-description {
     font-size: 24px;
     line-height: 32px;
-    color: #D9D9D9;
+    color: #d9d9d9;
     margin-top: 40px;
   }
 
@@ -262,10 +303,10 @@ export default {
     z-index: 1;
 
     &::before {
-      content: '';
+      content: "";
       width: calc(100% + 20px);
       height: 100%;
-      border: 3px solid #F58B31;
+      border: 3px solid #f58b31;
       position: absolute;
       top: 16px;
       left: 8px;
@@ -283,7 +324,7 @@ export default {
       width: 100%;
       background-color: transparent;
       border: none;
-      border-bottom: 3px solid #D9D9D9;
+      border-bottom: 3px solid #d9d9d9;
       padding: 0.375rem 0;
       margin-bottom: 50px;
       height: auto;
@@ -301,7 +342,7 @@ export default {
       background-color: transparent;
       color: #fff;
       border: none;
-      border-bottom: 3px solid #D9D9D9;
+      border-bottom: 3px solid #d9d9d9;
       border-radius: 0;
 
       //&::placeholder {
@@ -315,16 +356,16 @@ export default {
 
     & button {
       width: 100%;
-      color: #F58B31;
+      color: #f58b31;
       background-color: transparent;
-      border: 3px solid #F58B31;
+      border: 3px solid #f58b31;
       border-radius: 0;
       margin-bottom: 50px;
-      transition: .3s;
+      transition: 0.3s;
 
       &:hover {
-        background-color: #F58B31;
-        color: #D9D9D9;
+        background-color: #f58b31;
+        color: #d9d9d9;
       }
     }
   }
@@ -332,13 +373,11 @@ export default {
   &-notes {
     font-size: 16px;
     line-height: 21px;
-    color: #D9D9D9;
-
+    color: #d9d9d9;
   }
 }
 
 @media only screen and (max-width: 1199px) {
-
   .main__form {
     padding: 50px 0;
 
@@ -346,11 +385,9 @@ export default {
       margin-top: 50px;
     }
   }
-
 }
 
 @media only screen and (max-width: 767px) {
-
   .main__form {
     &-title {
       line-height: 45px;
@@ -361,11 +398,9 @@ export default {
       font-size: 18px;
     }
   }
-
 }
 
 @media only screen and (max-width: 575px) {
-
   .main__form {
     padding: 40px 0;
 
@@ -401,7 +436,5 @@ export default {
       font-size: 15px;
     }
   }
-
 }
-
 </style>
